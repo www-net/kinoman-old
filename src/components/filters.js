@@ -1,3 +1,12 @@
+//Создание фильтра
+const createFilterItem = (filters, isChecked) => {
+const {sortName} = filters;
+
+  return (
+    `<li><a href="#" class="sort__button sort__button--active">${sortName}</a></li>`
+  )
+}
+
 
 // Орисовка списка фильтров
 const createFiltersTemplate = () => {
