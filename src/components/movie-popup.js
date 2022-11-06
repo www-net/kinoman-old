@@ -1,12 +1,18 @@
-//Создание мока для попапа
+import { formatDuration } from "../utils";
+
+//Шаблон жанра
 const generationGenresTemplate = (genres) => {
-  return genres
-    .map((genre) => {
-      return (`<span class="film-details__genre">${genre}</span>`);
-    })
+  return genres.map((genre) => {
+    return (
+      `<td class="film-details__cell">
+      <span class="film-details__genre">${genre}</span>
+    </td>`
+    );
+  })
     .join(`\n`)
 };
 
+//Шаблон комментария
 const generateCommentTemplate = (comments) => {
   return comments
     .map((it) => {
@@ -35,55 +41,23 @@ const generateCommentTemplate = (comments) => {
     });
 }
 
-const getGenresPlural = (genres) => {
-  if (genres.length > 1) {
-    return (
-      `Genres`
-    )
-  }
-  return `Genre`;
+//Шаблон строки с именем актера
+const createActorsMarkup = (actors) => {
+  const { firstName, secondName } = actors;
+  return (
+    `<td class="film-details__cell">${firstName} ${secondName}</td>`
+  )
 }
 
-const generatePopupCard = () => {
-  return {
-    poster: `sagebrush-trail.jpg`,
-    title: `Непрактичный выбор цвена брюк в условиях дикого запада`,
-    originalTitle: `Sagebrush trail`,
-    rating: `8.3`,
-    director: `Гайдай`,
-    writers: `Стивен Кинг`,
-    actors: `Иннокентий Смоктуновский`,
-    releaseDate: `releaseDate`,
-    duration: `00:00`,
-    country: `Austria`,
-    genres: [`frfrfr`, `ololo`],
-    fullDescription: `Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit. Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit. Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit.`,
-    ageRating: `18+`,
-    comments: [
-      {
-        emoji: `smile.png`,
-        comment: `Interesting setting and a good cast`,
-        autor: `Tim Macoveev`,
-        date: `2019/12/31 23:59`,
-      },
-      {
-        emoji: `smile.png`,
-        comment: `Interesting setting and a good cast`,
-        autor: `Tim Macoveev`,
-        date: `2019/12/31 23:59`,
-      }
-    ],
-    countComments: `5`,
-    isInWatchList: true,
-    isWatched: true,
-    isFavorite: true,
-  }
+//Шаблон имени сценарита
+const createWritersMarkup = (writers) => {
+  const { firstName, secondName } = writers;
+  return (
+    `<td class="film-details__cell">${firstName} ${secondName}</td>`
+  )
 };
 
-// Отрисовка попапа
+// Макет попапа
 const createPopupTemplate = (movie) => {
   const {
     title,
@@ -105,6 +79,8 @@ const createPopupTemplate = (movie) => {
     isFavorite,
   } = movie;
 
+  const actorsMarkup = actors.map((it) => createActorsMarkup(it)).join(`\n`);
+  const writersMarkup = writers.map((it) => createWritersMarkup(it)).join(`\n`);
 
   return (
     `<section class="film-details">
@@ -135,32 +111,31 @@ const createPopupTemplate = (movie) => {
                     <table class="film-details__table">
                         <tr class="film-details__row">
                         <td class="film-details__term">Director</td>
-                        <td class="film-details__cell">${director}</td>
+                        <td class="film-details__cell">${director.firstName} ${director.secondName}</td>
                         </tr>
                         <tr class="film-details__row">
                         <td class="film-details__term">Writers</td>
-                        <td class="film-details__cell">${writers}</td>
+                        ${writersMarkup}
                         </tr>
                         <tr class="film-details__row">
                         <td class="film-details__term">Actors</td>
-                        <td class="film-details__cell">${actors}</td>
+                        ${actorsMarkup}
                         </tr>
                         <tr class="film-details__row">
                         <td class="film-details__term">Release Date</td>
-                        <td class="film-details__cell">${releaseDate}</td>
+                        <td class="film-details__cell">${releaseDate.getFullYear()}</td>
                         </tr>
                         <tr class="film-details__row">
                         <td class="film-details__term">Runtime</td>
-                        <td class="film-details__cell">${duration}</td>
+                        <td class="film-details__cell">${formatDuration(duration)}</td>
                         </tr>
                         <tr class="film-details__row">
                         <td class="film-details__term">Country</td>
                         <td class="film-details__cell">${country}</td>
                         </tr>
                         <tr class="film-details__row">
-                        <td class="film-details__term">${getGenresPlural(genres)}</td>
-                        <td class="film-details__cell">
-                        ${generationGenresTemplate(genres)}
+                        <td class="film-details__term">Genres</td>
+                          ${generationGenresTemplate(genres)}
                         </tr>
                     </table>
 
@@ -226,45 +201,4 @@ const createPopupTemplate = (movie) => {
   );
 };
 
-export { createPopupTemplate, generatePopupCard };
-
-
-                    // <li class="film-details__comment">
-                    //     <span class="film-details__comment-emoji">
-                    //     <img src="./images/emoji/sleeping.png" width="55" height="55" alt="emoji-sleeping">
-                    //     </span>
-                    //     <div>
-                    //     <p class="film-details__comment-text">Booooooooooring</p>
-                    //     <p class="film-details__comment-info">
-                    //         <span class="film-details__comment-author">John Doe</span>
-                    //         <span class="film-details__comment-day">2 days ago</span>
-                    //         <button class="film-details__comment-delete">Delete</button>
-                    //     </p>
-                    //     </div>
-                    // </li>
-                    // <li class="film-details__comment">
-                    //     <span class="film-details__comment-emoji">
-                    //     <img src="./images/emoji/puke.png" width="55" height="55" alt="emoji-puke">
-                    //     </span>
-                    //     <div>
-                    //     <p class="film-details__comment-text">Very very old. Meh</p>
-                    //     <p class="film-details__comment-info">
-                    //         <span class="film-details__comment-author">John Doe</span>
-                    //         <span class="film-details__comment-day">2 days ago</span>
-                    //         <button class="film-details__comment-delete">Delete</button>
-                    //     </p>
-                    //     </div>
-                    // </li>
-                    // <li class="film-details__comment">
-                    //     <span class="film-details__comment-emoji">
-                    //     <img src="./images/emoji/angry.png" width="55" height="55" alt="emoji-angry">
-                    //     </span>
-                    //     <div>
-                    //     <p class="film-details__comment-text">Almost two hours? Seriously?</p>
-                    //     <p class="film-details__comment-info">
-                    //         <span class="film-details__comment-author">John Doe</span>
-                    //         <span class="film-details__comment-day">Today</span>
-                    //         <button class="film-details__comment-delete">Delete</button>
-                    //     </p>
-                    //     </div>
-                    // </li>
+export { createPopupTemplate };

@@ -1,14 +1,14 @@
 import { createUserProfileTemplate } from './components/profile';
 import { createNavigationTemplate } from './components/navigation';
-import { createFiltersTemplate } from './components/filters';
+import { createSortTemplate } from './components/sort';
 import { createMovieListTemplate } from './components/movie-list';
 import { createMovieCardMarkup } from './components/movie-list';
 import { createButtonTemplate } from './components/load-more-btn';
 import { createMovieListExtraTemplate } from './components/movie-list-extra';
 import { createStatisticTemplate } from './components/statistics';
-import { createPopupTemplate, generatePopupCard } from './components/movie-popup';
+import { createPopupTemplate } from './components/movie-popup';
 
-import { generateMovieCards } from './mock/movie-card';
+import { generateMovieCards } from './mock/movie';
 import { generateNavigationItems } from "./mock/navigation";
 
 const MOVIE_COUNT = 20;
@@ -37,7 +37,7 @@ render(headerElement, createUserProfileTemplate());
 
 //Рендер меню и фильтров
 render(mainElement, createNavigationTemplate(navigationItems));
-render(mainElement, createFiltersTemplate());
+render(mainElement, createSortTemplate());
 
 //Рендер блока для списков фильмов
 render(mainElement, createMovieListTemplate());
@@ -50,9 +50,6 @@ const movieListElement = movieListContainer.querySelector(`.films-list__containe
 
 //Данные для генерации видеокарточек
 const movieCards = generateMovieCards(MOVIE_COUNT);
-
-//Данные для генерации попапа
-const popupCard = generatePopupCard();
 
 //Функция рендеринга карточек в списки фильмов
 const renderMovieList = (container, count) => {
@@ -84,7 +81,7 @@ renderMovieList(movieMostСommentedElement, MOVIE_EXTRA_COUNT);
 render(footerStatisticsElement, createStatisticTemplate());
 
 //Рендер попапа
-render(footerElement, createPopupTemplate(popupCard), `afterend`);
+render(footerElement, createPopupTemplate(movieCards[0]), `afterend`);
 
 //Попап
 const popUpElement = document.querySelector(`.film-details`);
