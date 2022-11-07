@@ -3,8 +3,12 @@ import {
   getRandomBool,
   getRandomInt,
   getRandomDecimal,
-  textSource,
+  generateRandomText,
+  generatePerson,
+  generateRandomDate,
 } from "../utils";
+
+import { generateComments } from "./comment";
 
 //Пути к постерам
 const posters = [
@@ -24,7 +28,7 @@ const genres = [`Musical`, `Western`, `Drama`, `Mystery`, `Cartoon`, `Action`, `
 const countries = [`Russia`, `USA`, `India`, `France`, `Italy`, `Canada`];
 
 //Вараинты ограничений по возрасту
-const ageVariants = [0, 6, 12, 16, 18, 21];
+const ageVariants = [`0+`, `6+`, `12+`, `16+`, `18+`, `21+`];
 
 //Генератор заголовка
 const generateTitle = () => {
@@ -34,17 +38,6 @@ const generateTitle = () => {
   return `${getRandomArrayItem(titleFirstWords)} ${getRandomArrayItem(titleSecondWords)} ${(getRandomBool() ? `${getRandomInt(2, 8)}` : ``)}`;
 };
 
-// Генератор персоны
-const generatePerson = () => {
-  const firstNames = [`James`, `John`, `Ben`, `Leonardo`, `Jennifer`, `Cortney`, `Cillian`, `Tom`];
-  const secondNames = [`Cameron`, `Carpenter`, `Affleck`, `DiCaprio`, `Aniston`, `Cox`, `Murphy`, `Hardy`];
-
-  return {
-    firstName: getRandomArrayItem(firstNames),
-    secondName: getRandomArrayItem(secondNames),
-  };
-};
-
 //Возвращает массив персон
 const getPersonsList = (count) => {
   let generatedPersons = [];
@@ -52,19 +45,6 @@ const getPersonsList = (count) => {
     generatedPersons.push(generatePerson());
   }
   return generatedPersons;
-}
-
-//Генерация случайной даты релиза
-const generateRandomDate = (minYear, maxYear, withTime = false) => {
-  const date = new Date();
-  const year = getRandomInt(minYear, maxYear + 1);
-  const month = getRandomInt(0, 11);
-  const day = getRandomInt(1, 29);
-  date.setFullYear(year, month, day);
-  if (withTime) {
-    date.setHours(getRandomInt(0, 24), getRandomInt(0, 60));
-  }
-  return date;
 }
 
 //Генерируем массив жанров
@@ -82,20 +62,6 @@ const getGenresList = (count) => {
     getRandomGenre();
   }
   return movieGenres;
-};
-
-//Возвращает случайный текст с количеством предложений заданном из диапазона
-export const generateRandomText = (minSentencesQty, maxSentencesQty) => {
-  const sentencesQty = getRandomInt(minSentencesQty, maxSentencesQty);
-  const sentences = textSource.split(`.`).map((it) => it.trim());
-  sentences.pop();
-
-  let text = ``;
-  for (let i = 0; i < sentencesQty; i++) {
-    text = `${text} ${getRandomArrayItem(sentences)}. `;
-  }
-
-  return text.trim();
 };
 
 // Создание объекта для генерации мока видеокарточки
@@ -118,30 +84,13 @@ const generateMovieCard = () => {
     genres: getGenresList(getRandomInt(1, 4)),
     poster: getRandomArrayItem(posters),
     description: generateRandomText(1, 5),
+    age: getRandomArrayItem(ageVariants),
     isWatched,
     isInWatchList: isWatched ? false : getRandomBool(),
     isFavorite: isWatched ? getRandomBool() : false,
 
-    fullDescription: `Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit. Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit. Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit.`,
-    ageRating: `18+`,
-    comments: [
-      {
-        emoji: `smile.png`,
-        comment: `Interesting setting and a good cast`,
-        autor: `Tim Macoveev`,
-        date: `2019/12/31 23:59`,
-      },
-      {
-        emoji: `smile.png`,
-        comment: `Interesting setting and a good cast`,
-        autor: `Tim Macoveev`,
-        date: `2019/12/31 23:59`,
-      }
-    ],
-    countComments: `5`,
+    comments: generateComments(getRandomInt(1, 10)),
+    countComments: getRandomInt(1, 5),
   };
 };
 

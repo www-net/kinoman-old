@@ -33,3 +33,55 @@ export const formatDuration = (duration) => `${Math.floor(duration / 60)}h ${dur
 
 //Обрезка строки до заданного лимита
 export const clipText = (text, limit) => text.length > limit ? `${text.slice(0, limit)}...` : text;
+
+//Возвращает случайный текст с количеством предложений заданном из диапазона
+export const generateRandomText = (minSentencesQty, maxSentencesQty) => {
+  const sentencesQty = getRandomInt(minSentencesQty, maxSentencesQty);
+  const sentences = textSource.split(`.`).map((it) => it.trim());
+  sentences.pop();
+
+  let text = ``;
+  for (let i = 0; i < sentencesQty; i++) {
+    text = `${text} ${getRandomArrayItem(sentences)}. `;
+  }
+
+  return text.trim();
+};
+
+// Генератор персоны
+export const generatePerson = () => {
+  const firstNames = [`James`, `John`, `Ben`, `Leonardo`, `Jennifer`, `Cortney`, `Cillian`, `Tom`];
+  const secondNames = [`Cameron`, `Carpenter`, `Affleck`, `DiCaprio`, `Aniston`, `Cox`, `Murphy`, `Hardy`];
+
+  return {
+    firstName: getRandomArrayItem(firstNames),
+    secondName: getRandomArrayItem(secondNames),
+  };
+};
+
+//Генерация случайной даты релиза
+export const generateRandomDate = (minYear, maxYear, withTime = false) => {
+  const date = new Date();
+  const year = getRandomInt(minYear, maxYear + 1);
+  const month = getRandomInt(0, 11);
+  const day = getRandomInt(1, 29);
+  date.setFullYear(year, month, day);
+  if (withTime) {
+    date.setHours(getRandomInt(0, 24), getRandomInt(0, 60));
+  }
+  return date;
+}
+
+//Добавление нуля
+const castDateTimeFormat = (value) => value < 10 ? `0${value}` : String(value);
+
+//Форматирование времени
+export const formatTime = (date) => {
+  const year = date.getFullYear();
+  const month = castDateTimeFormat(date.getMonth() + 1);
+  const day = castDateTimeFormat(date.getDate());
+  const hours = castDateTimeFormat(date.getHours());
+  const minutes = castDateTimeFormat(date.getMinutes());
+
+  return `${year}/${month}/${day} ${hours}:${minutes}`;
+};
