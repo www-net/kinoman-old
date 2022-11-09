@@ -19,6 +19,11 @@ export const getRandomInt = (a, b) => {
   return Math.floor(result);
 };
 
+//Увеличение числа на заданное значение addingValue
+export const increaseInt = (int, addingValue = 1) => {
+  return int + addingValue;
+};
+
 //Возвращаем случайный элемент массива
 export const getRandomArrayItem = (array) => array[getRandomInt(0, array.length - 1)];
 

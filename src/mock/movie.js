@@ -64,7 +64,7 @@ const getGenresList = (count) => {
   return movieGenres;
 };
 
-// Создание объекта для генерации мока видеокарточки
+// Генерация мока видеокарточки
 const generateMovieCard = () => {
   const title = generateTitle();
   const originalTitle = title;
@@ -94,7 +94,7 @@ const generateMovieCard = () => {
   };
 };
 
-//Создание временных данных (моков) видеокарточек
+//Создание видеокарточек
 const generateMovieCards = (count) => {
   return new Array(count)
     .fill(``)

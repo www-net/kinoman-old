@@ -1,5 +1,5 @@
 import { createUserProfileTemplate } from './components/profile';
-import { createNavigationTemplate } from './components/navigation';
+import { createNavigationTemplate } from './components/filters';
 import { createSortTemplate } from './components/sort';
 import {
   createMovieListContainer,
@@ -10,7 +10,7 @@ import { createStatisticTemplate } from './components/statistics';
 import { createPopupTemplate } from './components/movie-popup';
 
 import { generateMovieCards } from './mock/movie';
-import { generateNavigationItems } from "./mock/navigation";
+import { generateFilters} from "./mock/filter";
 import { MOVIE_COUNT } from "./constants";
 import { isEscapeEvent } from "./utils";
 
@@ -26,8 +26,11 @@ const footerStatisticsElement = footerElement.querySelector(`.footer__statistics
 //Количество отображенных карточек на данный момент
 let showMovies = MOVIE_COUNT.ON_START;
 
-//Данные для генерации навигации
-const navigationItems = generateNavigationItems();
+//Данные для генерации видеокарточек
+const movieCards = generateMovieCards(MOVIE_COUNT.TOTAL);
+
+//Данные для генерации фильтров
+const navigationItems = generateFilters(movieCards);
 
 //Функция для рендеринга компонентов
 const render = (container, template, place = `beforeend`) => {
@@ -52,9 +55,6 @@ render(mainMovieList, createMovieListTemplate(`All movies. Upcoming`));
 
 //Элемент в который будем вставлять карточки фильмов. Основной список
 const movieListElement = mainMovieList.querySelector(`.films-list__container`);
-
-//Данные для генерации видеокарточек
-const movieCards = generateMovieCards(MOVIE_COUNT.TOTAL);
 
 //Функция рендеринга карточек в списки фильмов
 const renderMovieList = (container, count) => {
