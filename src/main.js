@@ -1,19 +1,18 @@
 import { createUserProfileTemplate } from './components/profile';
 import { createNavigationTemplate } from './components/navigation';
 import { createSortTemplate } from './components/sort';
-import { createMovieListTemplate } from './components/movie-list';
-import { createMovieCardMarkup } from './components/movie-list';
-import { createButtonTemplate } from './components/load-more-btn';
-import { createMovieListExtraTemplate } from './components/movie-list-extra';
+import {
+  createMovieListContainer,
+  createMovieListTemplate,
+  createMovieCardMarkup,
+} from './components/movie-list';
 import { createStatisticTemplate } from './components/statistics';
 import { createPopupTemplate } from './components/movie-popup';
 
 import { generateMovieCards } from './mock/movie';
 import { generateNavigationItems } from "./mock/navigation";
-
-const MOVIE_COUNT = 20;
-const START_MOVIE_COUNT = 5;
-const MOVIE_EXTRA_COUNT = 2;
+import { MOVIE_COUNT } from "./constants";
+import { isEscapeEvent } from "./utils";
 
 //Шапка сайта
 const headerElement = document.querySelector(`.header`);
@@ -23,6 +22,9 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 //Раздел для отображения статистики
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
+
+//Количество отображенных карточек на данный момент
+let showMovies = MOVIE_COUNT.ON_START;
 
 //Данные для генерации навигации
 const navigationItems = generateNavigationItems();
@@ -39,43 +41,60 @@ render(headerElement, createUserProfileTemplate());
 render(mainElement, createNavigationTemplate(navigationItems));
 render(mainElement, createSortTemplate());
 
-//Рендер блока для списков фильмов
-render(mainElement, createMovieListTemplate());
+//Рендер общего блока для всех списков фильмов
+render(mainElement, createMovieListContainer());
 
-//Общий контейнер для списков фильмов. Объявляем здесь, так как соответствующий элемент только что отрисовался
-const movieListContainer = mainElement.querySelector(`.films`);
+//Общий контейнер для списков фильмов
+const mainMovieList = mainElement.querySelector(`.films`);
+
+//Рендер блока для основного списка фильмов
+render(mainMovieList, createMovieListTemplate(`All movies. Upcoming`));
 
 //Элемент в который будем вставлять карточки фильмов. Основной список
-const movieListElement = movieListContainer.querySelector(`.films-list__container`);
+const movieListElement = mainMovieList.querySelector(`.films-list__container`);
 
 //Данные для генерации видеокарточек
-const movieCards = generateMovieCards(MOVIE_COUNT);
+const movieCards = generateMovieCards(MOVIE_COUNT.TOTAL);
 
 //Функция рендеринга карточек в списки фильмов
 const renderMovieList = (container, count) => {
   movieCards.slice(0, count)
-  .forEach((movie) => {
-    render(container, createMovieCardMarkup(movie));
-  })
+    .forEach((movie) => {
+      render(container, createMovieCardMarkup(movie));
+    })
 };
 
 //Рендер карточек в основной список фильмов
-renderMovieList(movieListElement, START_MOVIE_COUNT);
+renderMovieList(movieListElement, MOVIE_COUNT.ON_START);
 
-//Рендер кннопки "Show more"
-render(movieListElement, createButtonTemplate(), `afterend`);
+//Кнопка show more
+const loadMoreBtn = mainMovieList.querySelector(`.films-list__show-more`);
+
+//Рендер дополнительных карточек фильмов
+const createMovieList = (movies) => movies.map(createMovieCardMarkup).join(`\n`);
+
+//Рендер дополнительных карточек фильмов по клику на кнопку "show more"
+loadMoreBtn.addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  const previouslyShown = showMovies;
+  showMovies = previouslyShown + MOVIE_COUNT.ON_BTN;
+  render(movieListElement, createMovieList(movieCards.slice(previouslyShown, showMovies)));
+  if (showMovies >= MOVIE_COUNT.TOTAL) {
+    loadMoreBtn.remove();
+  }
+});
 
 //Рендер дополнительных списков фильмов
-render(movieListContainer, createMovieListExtraTemplate(`Top rated`));
-render(movieListContainer, createMovieListExtraTemplate(`Most commented`));
+render(mainMovieList, createMovieListTemplate(`Top rated`, true));
+render(mainMovieList, createMovieListTemplate(`Most commented`, true));
 
 //Дополнительные списки фильмов
-const movieTopRatedElement = movieListContainer.querySelector(`.films-list--extra .films-list__container`);
-const movieMostСommentedElement = movieListContainer.querySelector(`.films-list--extra:nth-child(3) .films-list__container`);
+const movieTopRatedElement = mainMovieList.querySelector(`.films-list--extra .films-list__container`);
+const movieMostСommentedElement = mainMovieList.querySelector(`.films-list--extra:nth-child(3) .films-list__container`);
 
 //Рендер карточек в дополнительные списки фильмов
-renderMovieList(movieTopRatedElement, MOVIE_EXTRA_COUNT);
-renderMovieList(movieMostСommentedElement, MOVIE_EXTRA_COUNT);
+renderMovieList(movieTopRatedElement, MOVIE_COUNT.EXTRA);
+renderMovieList(movieMostСommentedElement, MOVIE_COUNT.EXTRA);
 
 //Рендер статистике в подвале
 render(footerStatisticsElement, createStatisticTemplate());
@@ -90,23 +109,29 @@ const popUpElement = document.querySelector(`.film-details`);
 popUpElement.classList.add(`visually-hidden`);
 
 //Постеры фильмов в карточке
-const moviePosters = movieListContainer.querySelectorAll(`.film-card__poster`);
+const moviePosters = mainMovieList.querySelectorAll(`.film-card__poster`);
 
 //Кнопка закрытия попапа
 const buttonPopupClose = popUpElement.querySelector(`.film-details__close-btn`);
 
-//Функция закрытия попапа, по клику по кнопке закрытия
+//Закрытие попапа, по клику по кнопке закрытия
 const closePopup = () => {
   popUpElement.classList.add('visually-hidden');
   buttonPopupClose.removeEventListener('click', closePopup);
+  document.removeEventListener('keydown', closePopupOnEsc);
 };
 
-//Функция открытия попапа, c подробной информацией о фильме, по клику на постер
-function openPopup() {
+//Закрытие попапа по нажатию на клавишу Esc
+const closePopupOnEsc = (evt) => {
+  isEscapeEvent(evt, closePopup);
+};
+
+//Открытие попапа, c подробной информацией о фильме, по клику на постер
+const openPopup = () => {
   popUpElement.classList.remove('visually-hidden');
   buttonPopupClose.addEventListener('click', closePopup);
+  document.addEventListener('keydown', closePopupOnEsc);
 };
-
 
 //Добавляем вотчер клика по постеру в карточке, для открытия попапа
 moviePosters.forEach((elem) => {

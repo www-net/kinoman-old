@@ -59,7 +59,7 @@ export const generatePerson = () => {
   };
 };
 
-//Генерация случайной даты релиза
+//Генерация случайной даты
 export const generateRandomDate = (minYear, maxYear, withTime = false) => {
   const date = new Date();
   const year = getRandomInt(minYear, maxYear + 1);
@@ -72,7 +72,7 @@ export const generateRandomDate = (minYear, maxYear, withTime = false) => {
   return date;
 }
 
-//Добавление нуля
+//Добавление нуля к числам в датах
 const castDateTimeFormat = (value) => value < 10 ? `0${value}` : String(value);
 
 //Форматирование времени
@@ -84,4 +84,11 @@ export const formatTime = (date) => {
   const minutes = castDateTimeFormat(date.getMinutes());
 
   return `${year}/${month}/${day} ${hours}:${minutes}`;
+};
+
+//Событие по нажатию наклавишу Esc
+export const isEscapeEvent = (evt, action) => {
+  if (evt.key == `Escape`) {
+    action();
+  }
 };

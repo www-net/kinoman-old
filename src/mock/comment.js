@@ -5,46 +5,18 @@ import {
   generateRandomDate,
 } from "../utils";
 
-//Смайлы
-const emojis = [
-  {
-    emotion: `smile`,
-    image: `./smile.png`
-  },
-  {
-    emotion: `angry`,
-    image: `./angry.png`
-  },
-  {
-    emotion: `sleeping`,
-    image: `./sleeping.png`
-  },
-  {
-    emotion: `puke`,
-    image: `./puke.png`
-  },
-];
-
-//Текст
-
-//Автор
-
-//Дата
-
-
-//Данные комментрария
-export const generateComments = (count) => {
-  const comments = [];
-  for (let i = 0; i < count; i++) {
-    comments.push(
-      {
-        emoji: getRandomArrayItem(emojis),
-        text: generateRandomText(1, 1),
-        autor: generatePerson(),
-        date: generateRandomDate(2010, 2022),
-      }
-    );
+import { EMOJIS } from "../constants";
+//Генерируем комментарий
+const generateComment = (count) => {
+  return {
+    emoji: getRandomArrayItem(EMOJIS),
+    text: generateRandomText(1, 1),
+    autor: generatePerson(),
+    date: generateRandomDate(2010, 2022),
   }
+}
 
-  return comments;
+//Генерируем массив комментариев
+export const generateComments = (commentCount) => {
+  return new Array(commentCount).fill(``).map(generateComment);
 };
