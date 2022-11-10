@@ -1,18 +1,17 @@
 import { formatTime } from "../utils";
+import { EMOJIS } from "../constants";
 
 //Шаблон комментария
-const generateCommentMarkup = (comments) => {
-  return comments
-    .map((it) => {
-      const {
-        emoji,
-        text,
-        autor,
-        date,
-      } = it;
+const createCommentMarkup = (comment) => {
+  const {
+    emoji,
+    text,
+    autor,
+    date,
+  } = comment;
 
-      return (
-        `<li class="film-details__comment">
+  return (
+    `<li class="film-details__comment">
           <span class="film-details__comment-emoji">
             <img src="./images/emoji/${emoji.image}" width="55" height="55" alt="emoji-${emoji.emotion}">
           </span>
@@ -25,19 +24,36 @@ const generateCommentMarkup = (comments) => {
             </p>
           </div>
         </li>`
-      )
-    }).join(`\n`);
+  )
+};
+
+//Шаблон смайла
+const createEmojiMarkup = (emoji) => {
+  const { emotion, image } = emoji;
+  return (
+    `<input class="film-details__emoji-item visually-hidden"
+        name="comment-emoji"
+        type="radio"
+        id="emoji-${emotion}"
+        value="${emotion}">
+      <label class="film-details__emoji-label" for="emoji-${emotion}">
+        <img src="./images/emoji/${image}" width="30" height="30" alt="emoji">
+    </label>`
+  )
 }
 
 //Разметка блока с комментариями
-export const generateCommentTemplate = (comments) => {
+export const generateCommentsTemplate = (comments) => {
+  const generateComments = comments.map(createCommentMarkup).join(`\n`);
+  const generateEmojis = EMOJIS.map(createEmojiMarkup).join(`\n`);
+
   return (
     `<section class="film-details__comments-wrap">
       <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">
       ${comments ? comments.length : `0`}</span></h3>
 
       <ul class="film-details__comments-list">
-        ${generateCommentMarkup(comments)}
+        ${generateComments}
       </ul>
 
       <div class="film-details__new-comment">
@@ -49,29 +65,7 @@ export const generateCommentTemplate = (comments) => {
         </label>
 
         <div class="film-details__emoji-list">
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile"
-            value="smile">
-          <label class="film-details__emoji-label" for="emoji-smile">
-            <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-          </label>
-
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping"
-            value="sleeping">
-          <label class="film-details__emoji-label" for="emoji-sleeping">
-            <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-          </label>
-
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke"
-            value="puke">
-          <label class="film-details__emoji-label" for="emoji-puke">
-            <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-          </label>
-
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry"
-            value="angry">
-          <label class="film-details__emoji-label" for="emoji-angry">
-            <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-          </label>
+          ${generateEmojis}
         </div>
       </div>
     </section>`

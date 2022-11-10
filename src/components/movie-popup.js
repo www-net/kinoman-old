@@ -1,5 +1,5 @@
 import { formatDuration } from "../utils";
-import { generateCommentTemplate } from "./comments";
+import { generateCommentsTemplate } from "./comments";
 
 //Шаблон жанра
 const generationGenresTemplate = (genres) => {
@@ -130,7 +130,7 @@ const createPopupTemplate = (movie) => {
                 </div>
 
                 <div class="form-details__bottom-container">
-                  ${generateCommentTemplate(comments)}
+                  ${generateCommentsTemplate(comments)}
                 </div>
             </form>
         </section>`

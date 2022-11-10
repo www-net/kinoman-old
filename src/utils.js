@@ -19,6 +19,11 @@ export const getRandomInt = (a, b) => {
   return Math.floor(result);
 };
 
+//Увеличение числа на заданное значение addingValue
+export const increaseInt = (int, addingValue = 1) => {
+  return int + addingValue;
+};
+
 //Возвращаем случайный элемент массива
 export const getRandomArrayItem = (array) => array[getRandomInt(0, array.length - 1)];
 
@@ -59,7 +64,7 @@ export const generatePerson = () => {
   };
 };
 
-//Генерация случайной даты релиза
+//Генерация случайной даты
 export const generateRandomDate = (minYear, maxYear, withTime = false) => {
   const date = new Date();
   const year = getRandomInt(minYear, maxYear + 1);
@@ -72,7 +77,7 @@ export const generateRandomDate = (minYear, maxYear, withTime = false) => {
   return date;
 }
 
-//Добавление нуля
+//Добавление нуля к числам в датах
 const castDateTimeFormat = (value) => value < 10 ? `0${value}` : String(value);
 
 //Форматирование времени
@@ -84,4 +89,11 @@ export const formatTime = (date) => {
   const minutes = castDateTimeFormat(date.getMinutes());
 
   return `${year}/${month}/${day} ${hours}:${minutes}`;
+};
+
+//Событие по нажатию наклавишу Esc
+export const isEscapeEvent = (evt, action) => {
+  if (evt.key == `Escape`) {
+    action();
+  }
 };
