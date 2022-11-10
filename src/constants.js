@@ -28,7 +28,7 @@ export const EMOJIS = [
 
 //Константы управлением отображения
 export const MOVIE_COUNT = {
-  TOTAL: 20,
+  TOTAL: 40,
   ON_START: 5,
   ON_BTN: 5,
   EXTRA: 2,

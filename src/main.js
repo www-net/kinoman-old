@@ -1,4 +1,4 @@
-import { createUserProfileTemplate } from './components/profile';
+import { createUserProfileTemplate } from './components/pfofile';
 import { createNavigationTemplate } from './components/filters';
 import { createSortTemplate } from './components/sort';
 import {
@@ -13,6 +13,7 @@ import { generateMovieCards } from './mock/movie';
 import { generateFilters} from "./mock/filter";
 import { MOVIE_COUNT } from "./constants";
 import { isEscapeEvent } from "./utils";
+import { getRating } from "./mock/user";
 
 //Шапка сайта
 const headerElement = document.querySelector(`.header`);
@@ -32,13 +33,16 @@ const movieCards = generateMovieCards(MOVIE_COUNT.TOTAL);
 //Данные для генерации фильтров
 const navigationItems = generateFilters(movieCards);
 
+//Рейтинг пользователя
+const userRating = getRating(navigationItems);
+
 //Функция для рендеринга компонентов
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
 //Рендер аватара и звания пользователя
-render(headerElement, createUserProfileTemplate());
+render(headerElement, createUserProfileTemplate(userRating));
 
 //Рендер меню и фильтров
 render(mainElement, createNavigationTemplate(navigationItems));
@@ -97,7 +101,7 @@ renderMovieList(movieTopRatedElement, MOVIE_COUNT.EXTRA);
 renderMovieList(movieMostСommentedElement, MOVIE_COUNT.EXTRA);
 
 //Рендер статистике в подвале
-render(footerStatisticsElement, createStatisticTemplate());
+render(footerStatisticsElement, createStatisticTemplate(movieCards.length));
 
 //Рендер попапа
 render(footerElement, createPopupTemplate(movieCards[0]), `afterend`);

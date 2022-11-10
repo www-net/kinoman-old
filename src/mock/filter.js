@@ -12,7 +12,6 @@ const EMPTY_FILTERS = [
 export const generateFilters = (movies) => {
   return movies.reduce((acc, movie) => {
     const [all, watchlist, history, favorites] = acc.map((it) => it.count);
-    console.log(all, watchlist, history, favorites);
     return [
       {
         name: FILTER_NAMES.ALL,

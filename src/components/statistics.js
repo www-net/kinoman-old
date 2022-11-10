@@ -1,8 +1,6 @@
 // Отрисовка статистики
-const createStatisticTemplate = () => {
+export const createStatisticTemplate = (movieCount) => {
   return (
-    `<p>130 291 movies inside</p>`
+    `<p>${movieCount} movies inside</p>`
   );
 };
-
-export { createStatisticTemplate };
