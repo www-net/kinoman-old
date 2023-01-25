@@ -89,7 +89,7 @@ const generateMovieCard = () => {
     isInWatchList: isWatched ? false : getRandomBool(),
     isFavorite: isWatched ? getRandomBool() : false,
 
-    comments: generateComments(getRandomInt(1, 10)),
+    comments: generateComments(getRandomInt(0, 10)),
     countComments: getRandomInt(1, 5),
   };
 };
