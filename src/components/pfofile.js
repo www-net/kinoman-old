@@ -9,4 +9,4 @@ const createUserProfileTemplate = (rating) => {
   );
 };
 
-export { createUserProfileTemplate };
+export {createUserProfileTemplate};

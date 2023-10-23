@@ -1,14 +1,14 @@
-import { FILTER_NAMES } from "../constants";
-import { increaseInt } from "../utils";
+import {FILTER_NAMES} from "../constants";
+import {increaseInt} from "../utils";
 
 const EMPTY_FILTERS = [
-  { name: FILTER_NAMES.ALL, count: 0 },
-  { name: FILTER_NAMES.WATCHLIST, count: 0 },
-  { name: FILTER_NAMES.HISTORY, count: 0 },
-  { name: FILTER_NAMES.FAVORITES, count: 0 },
+  {name: FILTER_NAMES.ALL, count: 0},
+  {name: FILTER_NAMES.WATCHLIST, count: 0},
+  {name: FILTER_NAMES.HISTORY, count: 0},
+  {name: FILTER_NAMES.FAVORITES, count: 0},
 ];
 
-//Данные для элемента навигации
+// Данные для элемента навигации
 export const generateFilters = (movies) => {
   return movies.reduce((acc, movie) => {
     const [all, watchlist, history, favorites] = acc.map((it) => it.count);
@@ -34,5 +34,5 @@ export const generateFilters = (movies) => {
         count: movie.isFavorite ? increaseInt(favorites) : favorites,
       },
     ];
-  }, EMPTY_FILTERS)
+  }, EMPTY_FILTERS);
 };

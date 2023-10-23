@@ -15,31 +15,31 @@ In rutrum ac purus sit amet tempus.`
 export const getRandomInt = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower; //Максимум и минимум включаются
+  const result = Math.random() * (upper - lower + 1) + lower; // Максимум и минимум включаются
   return Math.floor(result);
 };
 
-//Увеличение числа на заданное значение addingValue
+// Увеличение числа на заданное значение addingValue
 export const increaseInt = (int, addingValue = 1) => {
   return int + addingValue;
 };
 
-//Возвращаем случайный элемент массива
+// Возвращаем случайный элемент массива
 export const getRandomArrayItem = (array) => array[getRandomInt(0, array.length - 1)];
 
-//Возвращает случайное значение boolean
+// Возвращает случайное значение boolean
 export const getRandomBool = (probability = 0.5) => Math.random() <= probability;
 
-//Возвращает псевдослучайное десятичное число из интервала min-max
+// Возвращает псевдослучайное десятичное число из интервала min-max
 export const getRandomDecimal = (min, max, precision = 1) => (min + Math.random() * (max - min)).toFixed(precision);
 
-//Форматирует длительность фильма для отображения
+// Форматирует длительность фильма для отображения
 export const formatDuration = (duration) => `${Math.floor(duration / 60)}h ${duration % 60}m`;
 
-//Обрезка строки до заданного лимита
+// Обрезка строки до заданного лимита
 export const clipText = (text, limit) => text.length > limit ? `${text.slice(0, limit)}...` : text;
 
-//Возвращает случайный текст с количеством предложений заданном из диапазона
+// Возвращает случайный текст с количеством предложений заданном из диапазона
 export const generateRandomText = (minSentencesQty, maxSentencesQty) => {
   const sentencesQty = getRandomInt(minSentencesQty, maxSentencesQty);
   const sentences = textSource.split(`.`).map((it) => it.trim());
@@ -64,7 +64,7 @@ export const generatePerson = () => {
   };
 };
 
-//Генерация случайной даты
+// Генерация случайной даты
 export const generateRandomDate = (minYear, maxYear, withTime = false) => {
   const date = new Date();
   const year = getRandomInt(minYear, maxYear + 1);
@@ -75,12 +75,12 @@ export const generateRandomDate = (minYear, maxYear, withTime = false) => {
     date.setHours(getRandomInt(0, 24), getRandomInt(0, 60));
   }
   return date;
-}
+};
 
-//Добавление нуля к числам в датах
+// Добавление нуля к числам в датах
 const castDateTimeFormat = (value) => value < 10 ? `0${value}` : String(value);
 
-//Форматирование времени
+// Форматирование времени
 export const formatTime = (date) => {
   const year = date.getFullYear();
   const month = castDateTimeFormat(date.getMonth() + 1);
@@ -91,9 +91,9 @@ export const formatTime = (date) => {
   return `${year}/${month}/${day} ${hours}:${minutes}`;
 };
 
-//Событие по нажатию наклавишу Esc
+// Событие по нажатию наклавишу Esc
 export const isEscapeEvent = (evt, action) => {
-  if (evt.key == `Escape`) {
+  if (evt.key === `Escape`) {
     action();
   }
 };

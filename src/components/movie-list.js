@@ -1,4 +1,4 @@
-import { formatDuration, clipText } from "../utils";
+import {formatDuration, clipText} from "../utils";
 
 // Шаблон карточки фильма
 export const createMovieCardMarkup = (movie) => {
@@ -44,7 +44,7 @@ export const createMovieCardMarkup = (movie) => {
 export const createMovieListContainer = () => {
   return (
     `<section class="films"></section>`
-  )
+  );
 };
 
 // Создание списка фильмов

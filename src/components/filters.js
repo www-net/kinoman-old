@@ -1,13 +1,13 @@
-import { FILTER_NAMES } from "../constants";
+import {FILTER_NAMES} from "../constants";
 
-//Создание элемента фильтра
+// Создание элемента фильтра
 const createNavigationMarkup = (filter) => {
-  const { name, label, count } = filter;
+  const {name, label, count} = filter;
 
   return (
     `<a href="#${name}" class="main-navigation__item">
     ${label}
-    ${name == FILTER_NAMES.ALL ? `` : `<span class="main-navigation__item-count">${count}</span>`}
+    ${name === FILTER_NAMES.ALL ? `` : `<span class="main-navigation__item-count">${count}</span>`}
     </a>`
   );
 };

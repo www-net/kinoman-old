@@ -1,7 +1,7 @@
-import { formatDuration } from "../utils";
-import { generateCommentsTemplate } from "./comments";
+import {formatDuration} from "../utils";
+import {generateCommentsTemplate} from "./comments";
 
-//Шаблон жанра
+// Шаблон жанра
 const generationGenresTemplate = (genres) => {
   return genres.map((genre) => {
     return (
@@ -10,23 +10,23 @@ const generationGenresTemplate = (genres) => {
     </td>`
     );
   })
-    .join(`\n`)
+    .join(`\n`);
 };
 
-//Шаблон строки с именем актера
+// Шаблон строки с именем актера
 const createActorsMarkup = (actors) => {
-  const { firstName, secondName } = actors;
+  const {firstName, secondName} = actors;
   return (
     `<td class="film-details__cell">${firstName} ${secondName}</td>`
-  )
-}
+  );
+};
 
-//Шаблон имени сценарита
+// Шаблон имени сценарита
 const createWritersMarkup = (writers) => {
-  const { firstName, secondName } = writers;
+  const {firstName, secondName} = writers;
   return (
     `<td class="film-details__cell">${firstName} ${secondName}</td>`
-  )
+  );
 };
 
 // Макет попапа
@@ -46,9 +46,9 @@ const createPopupTemplate = (movie) => {
     age,
     poster,
     comments,
-    isInWatchList,
-    isWatched,
-    isFavorite,
+    // isInWatchList,
+    // isWatched,
+    // isFavorite,
   } = movie;
 
   const actorsMarkup = actors.map((it) => createActorsMarkup(it)).join(`\n`);
@@ -137,4 +137,4 @@ const createPopupTemplate = (movie) => {
   );
 };
 
-export { createPopupTemplate };
+export {createPopupTemplate};

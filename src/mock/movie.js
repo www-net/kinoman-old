@@ -8,9 +8,9 @@ import {
   generateRandomDate,
 } from "../utils";
 
-import { generateComments } from "./comment";
+import {generateComments} from "./comment";
 
-//Пути к постерам
+// Пути к постерам
 const posters = [
   `made-for-each-other.png`,
   `popeye-meets-sinbad.png`,
@@ -19,18 +19,18 @@ const posters = [
   `the-dance-of-life.jpg`,
   `the-great-flamarion.jpg`,
   `the-man-with-the-golden-arm.jpg`,
-]
+];
 
-//Массив жанров
+// Массив жанров
 const genres = [`Musical`, `Western`, `Drama`, `Mystery`, `Cartoon`, `Action`, `Thriller`];
 
-//Страны
+// Страны
 const countries = [`Russia`, `USA`, `India`, `France`, `Italy`, `Canada`];
 
-//Вараинты ограничений по возрасту
+// Вараинты ограничений по возрасту
 const ageVariants = [`0+`, `6+`, `12+`, `16+`, `18+`, `21+`];
 
-//Генератор заголовка
+// Генератор заголовка
 const generateTitle = () => {
   const titleFirstWords = [`Great`, `Spider`, `Starship`, `Star`, `Time`, `Little`, `Universal`, `Lost`];
   const titleSecondWords = [`Gatsby`, `Man`, `Troopers`, `Wars`, `Machine`, `China`, `Soldier`, `Ark`];
@@ -38,27 +38,27 @@ const generateTitle = () => {
   return `${getRandomArrayItem(titleFirstWords)} ${getRandomArrayItem(titleSecondWords)} ${(getRandomBool() ? `${getRandomInt(2, 8)}` : ``)}`;
 };
 
-//Возвращает массив персон
+// Возвращает массив персон
 const getPersonsList = (count) => {
   let generatedPersons = [];
   for (let i = 0; i < count; i++) {
     generatedPersons.push(generatePerson());
   }
   return generatedPersons;
-}
+};
 
-//Генерируем массив жанров
+// Генерируем массив жанров
 const getGenresList = (count) => {
   let movieGenres = [];
   for (let i = 0; i < count; i++) {
     const getRandomGenre = () => {
       const randomGenre = getRandomArrayItem(genres);
-      if (movieGenres.find((it) => it == randomGenre)) {
+      if (movieGenres.find((it) => it === randomGenre)) {
         getRandomGenre();
       } else {
         movieGenres.push(randomGenre);
       }
-    }
+    };
     getRandomGenre();
   }
   return movieGenres;
@@ -94,11 +94,11 @@ const generateMovieCard = () => {
   };
 };
 
-//Создание видеокарточек
+// Создание видеокарточек
 const generateMovieCards = (count) => {
   return new Array(count)
     .fill(``)
     .map(generateMovieCard);
-}
+};
 
-export { generateMovieCard, generateMovieCards };
+export {generateMovieCard, generateMovieCards};

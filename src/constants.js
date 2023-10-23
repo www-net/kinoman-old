@@ -1,4 +1,4 @@
-//Фильтры
+// Фильтры
 export const FILTER_NAMES = {
   ALL: `all`,
   WATCHLIST: `watchlist`,
@@ -6,7 +6,7 @@ export const FILTER_NAMES = {
   FAVORITES: `favorites`
 };
 
-//Смайлы
+// Смайлы
 export const EMOJIS = [
   {
     emotion: `smile`,
@@ -26,7 +26,7 @@ export const EMOJIS = [
   },
 ];
 
-//Константы управлением отображения
+// Константы управлением отображения
 export const MOVIE_COUNT = {
   TOTAL: 40,
   ON_START: 5,

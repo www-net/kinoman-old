@@ -1,7 +1,7 @@
-import { formatTime } from "../utils";
-import { EMOJIS } from "../constants";
+import {formatTime} from "../utils";
+import {EMOJIS} from "../constants";
 
-//Шаблон комментария
+// Шаблон комментария
 const createCommentMarkup = (comment) => {
   const {
     emoji,
@@ -24,12 +24,12 @@ const createCommentMarkup = (comment) => {
             </p>
           </div>
         </li>`
-  )
+  );
 };
 
-//Шаблон смайла
+// Шаблон смайла
 const createEmojiMarkup = (emoji) => {
-  const { emotion, image } = emoji;
+  const {emotion, image} = emoji;
   return (
     `<input class="film-details__emoji-item visually-hidden"
         name="comment-emoji"
@@ -39,10 +39,10 @@ const createEmojiMarkup = (emoji) => {
       <label class="film-details__emoji-label" for="emoji-${emotion}">
         <img src="./images/emoji/${image}" width="30" height="30" alt="emoji">
     </label>`
-  )
-}
+  );
+};
 
-//Разметка блока с комментариями
+// Разметка блока с комментариями
 export const generateCommentsTemplate = (comments) => {
   const generateComments = comments.map(createCommentMarkup).join(`\n`);
   const generateEmojis = EMOJIS.map(createEmojiMarkup).join(`\n`);
